@@ -71,12 +71,12 @@ def cnn_lstm(time_step, features, x_train, y_train, x_val, y_val, unit_cnn, unit
     history = model_cnn_lstm.fit(x_train, y_train, batch_size=32, validation_data=(x_val, y_val), epochs=120)
     return model_cnn_lstm, history
 
-def tcn_BiGRU_attention(time_step, features, x_train, y_train, x_val, y_val):
+def tcn_BiGRU_attention(time_step, features, x_train, y_train, x_val, y_val, unit_bigru):
     inputs = Input(batch_shape=(None, time_step, features))
     # TCN layer
     tcn = TCN(nb_filters=10, kernel_size=2, dilations=[1, 2, 4], return_sequences=True)(inputs)
     # LSTM layer
-    lstm = Bidirectional(GRU(50, return_sequences=True))(tcn)
+    lstm = Bidirectional(GRU(unit_bigru, return_sequences=True))(tcn)
 
     # Attention mechanism
     attention = Dense(1, activation='tanh')(lstm)
